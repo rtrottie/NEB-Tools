@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-
+"""
+script to find bandgap of a VASP run
+"""
 from pymatgen.io.vasp.outputs import *
 import argparse
 

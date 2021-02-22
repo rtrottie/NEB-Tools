@@ -2,8 +2,6 @@
 # cfg.py file before this one on your python path.  If an atom you want to use is missing just let me know
 # and I can add it.  Variables at the end of this file should be declared in your .bashrc (or .my.bashrc on janus)
 
-import os
-
 INCAR = {
 
     'LDAUL': {'default': -1,

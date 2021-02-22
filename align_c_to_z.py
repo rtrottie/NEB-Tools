@@ -7,16 +7,16 @@ from pymatgen.core.operations import *
 import numpy as np
 
 p = Poscar.from_file('POSCAR')
-s = p.structure
+struc = p.structure
 
 a = struc.lattice.matrix[2] / np.linalg.norm(struc.lattice.matrix[2])
 
 b = np.array([0, 0, 1.0])
 
 th = np.arccos(np.dot(a, b))
-v = np.cross(a,b)
+v = np.cross(a, b)
 s = np.linalg.norm(v)
-c = np.dot(a,b)
+c = np.dot(a, b)
 
 vx = np.matrix([[    0, -v[2],  v[1]],
                 [ v[2],     0, -v[0]],
