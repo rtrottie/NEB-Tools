@@ -3,7 +3,6 @@
 # and I can add it.  Variables at the end of this file should be declared in your .bashrc (or .my.bashrc on janus)
 
 INCAR = {
-
     'LDAUL': {'default': -1,
               'Fe': 2,
               'Co': 2,
@@ -30,23 +29,11 @@ INCAR = {
               'Zn': 0,
               'Ru': 3
               },
-    # 'LDAUU': {'default': 0,
-    #           'Fe': 5.3,
-    #           'Co': 3.32,
-    #           'Ni': 6.45,
-    #           'Cu': 5,
-    #           'Mn': 3.9,
-    #           'Ti': 0,
-    #           'Cr': 3.7,
-    #           'V' : 3.25,
-    #           'Sc': 0,
-    #           'Zn': 0,
-    #           'Ru': 3
-    #           },
-    'MAGMOM' : {'default': 0,
+
+    'MAGMOM': {'default': 0,
                 'Sc': 1,
                 'Ti': 2,
-                'V' : 3,
+                'V':  3,
                 'Cr': 4,
                 'Mn': 5,
                 'Fe': 4,
@@ -55,7 +42,7 @@ INCAR = {
                 'Cu': 1,
                 'Zn': 0,
                 'Ru': 0
-                }
+              }
 }
 
 INCAR_format = [
@@ -70,6 +57,6 @@ INCAR_format = [
     ('OUTPUT', ['NWRITE', 'LORBIT', 'LAECHG', 'LWAVE', 'LCHARG', 'LVTOT', 'LOPTICS', 'LVHAR', 'LPEAD']),
     ('NEB', ['IMAGES', 'SPRING']),
     ('VTST', ['ICHAIN', 'IOPT', 'LCLIMB', 'LNEBCELL']),
-    ('SETUP', ['REQUIRE', 'AUTO_TIME', 'AUTO_NODES', 'AUTO_MEM', 'AUTO_GAMMA', 'AUTO_CORES', 'AUTO_QUEUE', 'STAGE_NUMBER', 'STAGE_NAME', 'STAGE_FILE']) # must be last
+    ('SETUP', ['REQUIRE', 'AUTO_TIME', 'AUTO_NODES', 'AUTO_MEM', 'AUTO_GAMMA', 'AUTO_CORES', 'AUTO_QUEUE', 'STAGE_NUMBER', 'STAGE_NAME', 'STAGE_FILE'])  # must be last
 
 ]
