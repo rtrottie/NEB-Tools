@@ -11,7 +11,7 @@ INCAR = {
               'Mn': 2,
               'Ti': 2,
               'Cr': 2,
-              'V' : 2,
+              'V': 2,
               'Sc': 2,
               'Zn': 2,
               'Ru': 2
@@ -31,24 +31,26 @@ INCAR = {
               },
 
     'MAGMOM': {'default': 0,
-                'Sc': 1,
-                'Ti': 2,
-                'V':  3,
-                'Cr': 4,
-                'Mn': 5,
-                'Fe': 4,
-                'Co': 3,
-                'Ni': 2,
-                'Cu': 1,
-                'Zn': 0,
-                'Ru': 0
-              }
+               'Sc': 1,
+               'Ti': 2,
+               'V': 3,
+               'Cr': 4,
+               'Mn': 5,
+               'Fe': 4,
+               'Co': 3,
+               'Ni': 2,
+               'Cu': 1,
+               'Zn': 0,
+               'Ru': 0
+               }
 }
 
 INCAR_format = [
     ('SYSTEM', ['SYSTEM']),
     ('ALGORITHM - GENERAL', ['NPAR', 'NSIM', 'NCORE', 'KPAR', 'LREAL', 'IDIPOL', 'LDIPOL', 'LPLANE']),
-    ('ALGORITHM - ELECTRONIC', ['GGA', 'METAGGA', 'ALGO', 'IALGO', 'PREC', 'ENCUT', 'NELMIN', 'NELM', 'NELMDL',  'EDIFF', 'NELECT', 'WEIMIN', 'ADDGRID']),
+    ('ALGORITHM - ELECTRONIC',
+     ['GGA', 'METAGGA', 'ALGO', 'IALGO', 'PREC', 'ENCUT', 'NELMIN', 'NELM', 'NELMDL', 'EDIFF', 'NELECT', 'WEIMIN',
+      'ADDGRID']),
     ('ELECTRONIC STRUCTURE', ['ISPIN', 'MAGMOM', 'NUPDOWN', 'NBANDS', 'ISMEAR', 'SIGMA']),
     ('DFT+U', ['LDAU', 'LDAUTYPE', 'LDAUL', 'LDAUU', 'LMAXMIX', 'LDAUPRINT']),
     ('HSE', ['LHFCALC', 'HFSCREEN', 'PRECFOCK', 'AEXX', 'NKRED']),
@@ -57,6 +59,8 @@ INCAR_format = [
     ('OUTPUT', ['NWRITE', 'LORBIT', 'LAECHG', 'LWAVE', 'LCHARG', 'LVTOT', 'LOPTICS', 'LVHAR', 'LPEAD']),
     ('NEB', ['IMAGES', 'SPRING']),
     ('VTST', ['ICHAIN', 'IOPT', 'LCLIMB', 'LNEBCELL']),
-    ('SETUP', ['REQUIRE', 'AUTO_TIME', 'AUTO_NODES', 'AUTO_MEM', 'AUTO_GAMMA', 'AUTO_CORES', 'AUTO_QUEUE', 'STAGE_NUMBER', 'STAGE_NAME', 'STAGE_FILE'])  # must be last
+    ('SETUP',
+     ['REQUIRE', 'AUTO_TIME', 'AUTO_NODES', 'AUTO_MEM', 'AUTO_GAMMA', 'AUTO_CORES', 'AUTO_QUEUE', 'STAGE_NUMBER',
+      'STAGE_NAME', 'STAGE_FILE'])  # must be last
 
 ]

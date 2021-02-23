@@ -5,7 +5,6 @@ import argparse
 import numpy as np
 from pymatgen.core.operations import SymmOp
 from pymatgen.transformations.standard_transformations import RotationTransformation
-import matplotlib.pyplot as plt
 
 
 def align_a_to_vector(structure: Structure, vector: list):
@@ -27,7 +26,8 @@ def align_a_to_vector(structure: Structure, vector: list):
     angle = np.arctan2(np.dot(np.cross(plane_projection, a), normal), np.dot(plane_projection, a))
     rot = SymmOp.from_origin_axis_angle([0, 0, 0], normal, angle, angle_in_radians=True)
     s.apply_operation(rot)
-    return Structure(structure.lattice, s.species, s.cart_coords, coords_are_cartesian=True, site_properties=s.site_properties)
+    return Structure(structure.lattice, s.species, s.cart_coords, coords_are_cartesian=True,
+                     site_properties=s.site_properties)
 
 
 def intersection(v, p, bv):
@@ -47,13 +47,13 @@ def intersection(v, p, bv):
     x0 = p[0]
     y0 = p[1]
     z0 = p[2]
-    y = (x0*b*B - y0*a*B) / (b*A - a*B)
-    x = y*A/B
-    z = y*C/B
+    y = (x0 * b * B - y0 * a * B) / (b * A - a * B)
+    x = y * A / B
+    z = y * C / B
     return x, y, z
 
 
-def set_vector_as_boundary(structure: Structure, vector: list):
+def set_vector_as_boundary(structure: Structure, vector: np.array):
     """
 
     :param structure: structure to be relaxed
@@ -94,10 +94,10 @@ if __name__ == '__main__':
 
     # Load files
     structure = Poscar.from_file(args.structure).structure
-    if args.modecar: # if constrained vector is provided (as MODECAR)
+    if args.modecar:  # if constrained vector is provided (as MODECAR)
         with open(args.modecar) as modecar:
             vector = np.array([float(x) for x in modecar.readlines()[args.atoms[0]].split()])
-    else: # otherwise make it from the structure
+    else:  # otherwise make it from the structure
         vector = structure[args.atoms[0]].coords - structure[args.atoms[1]].coords
     structure = set_vector_as_boundary(structure, vector)
     Poscar(structure).write_file(args.output)

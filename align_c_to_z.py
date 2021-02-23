@@ -18,11 +18,11 @@ v = np.cross(a, b)
 s = np.linalg.norm(v)
 c = np.dot(a, b)
 
-vx = np.matrix([[    0, -v[2],  v[1]],
-                [ v[2],     0, -v[0]],
-                [-v[1],  v[0],     0]])
+vx = np.matrix([[0, -v[2], v[1]],
+                [v[2], 0, -v[0]],
+                [-v[1], v[0], 0]])
 
-R = np.identity(3) + vx + vx*vx*(1-c)/(s*s)
+R = np.identity(3) + vx + vx * vx * (1 - c) / (s * s)
 
 sym = SymmOp.from_rotation_and_translation(R)
 

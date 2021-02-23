@@ -27,35 +27,34 @@ def get_energy(i, structure: Structure, target=0.01):
                              'IOPT': 0,
                              'IBRION': 3,
                              'EDIFFG': 1e-3,
-                             'POTIM' : 0},
+                             'POTIM': 0},
                     }}
     ]
     folder = os.path.join(cwd, str(i).zfill(4))
 
     # Check if Run has occured
-    if os.path.exists(folder): # if it has
+    if os.path.exists(folder):  # if it has
         Poscar(structure).write_file(os.path.join(folder, 'POSCAR'))
-        try: # attempt to get data from completed run
+        try:  # attempt to get data from completed run
             vasprun_above = Vasprun(os.path.join(folder, 'above', 'vasprun.xml'))
             vasprun_below = Vasprun(os.path.join(folder, 'below', 'vasprun.xml'))
             if vasprun_above.converged and vasprun_below.converged:
-
                 with open(os.path.join(folder, 'energy.txt'), 'w') as f:
                     f.write(str(min(vasprun_above.final_energy, vasprun_below.final_energy)))
                 return min(vasprun_above.final_energy, vasprun_below.final_energy)
-        except: # TODO: Determine errors to be caught here
-            try: # If run is not completed, see if override is provided
+        except:  # TODO: Determine errors to be caught here
+            try:  # If run is not completed, see if override is provided
                 if os.path.exists(os.path.join(folder, 'energy.txt')):
                     with open(os.path.join(folder, 'energy.txt'), 'r') as f:
                         energy = float(f.read().split()[0])
                     return energy
-                else: # see if simple run was performed and check for energy
+                else:  # see if simple run was performed and check for energy
                     shutil.copy('INCAR', os.path.join(folder, 'INCAR'))
                     vasprun = Vasprun(os.path.join(folder, 'vasprun.xml'))
                     with open(os.path.join(folder, 'energy.txt'), 'w') as f:
                         f.write(str(vasprun.final_energy))
                     return vasprun.final_energy
-            except: # TODO: Determine errors to be caught here
+            except:  # TODO: Determine errors to be caught here
                 pass
     # If the run was not performed, restart calculation
     else:
@@ -64,7 +63,7 @@ def get_energy(i, structure: Structure, target=0.01):
     below = None
 
     # Initialize from previous runs
-    for dir in [dir for dir in os.listdir(cwd) if os.path.isdir(os.path.join(cwd, dir))]: # determine closest runs
+    for dir in [dir for dir in os.listdir(cwd) if os.path.isdir(os.path.join(cwd, dir))]:  # determine closest runs
         try:
             dir_i = int(dir)
             if i == dir_i:
@@ -88,20 +87,20 @@ def get_energy(i, structure: Structure, target=0.01):
             pass
     same_wfxns = 0
     for dir_i, dir in [(str(above).zfill(4), 'above'), (str(below).zfill(4), 'below')]:
-        try: # Load vasprun and check if individual folders have converged
+        try:  # Load vasprun and check if individual folders have converged
             vasprun = Vasprun(os.path.join(folder, dir, 'vasprun.xml'))
             if vasprun.converged:
                 pass
             else:
                 raise Exception('Not Converged')
-        except: # if the run has not converged, setup a calculation
+        except:  # if the run has not converged, setup a calculation
             os.makedirs(os.path.join(folder, dir), exist_ok=True)
-            if not os.path.exists(os.path.join(folder, dir, 'WAVECAR')): # check if files exist to initialize run
-                try: # copy them if provided
+            if not os.path.exists(os.path.join(folder, dir, 'WAVECAR')):  # check if files exist to initialize run
+                try:  # copy them if provided
                     shutil.copy(os.path.join(dir_i, 'WAVECAR'), os.path.join(folder, dir, 'WAVECAR'))
                     shutil.copy(os.path.join(dir_i, 'CHGCAR'), os.path.join(folder, dir, 'CHGCAR'))
                     logging.info('Copied from {} to {} (in main dir)'.format(dir_i, os.path.join(folder, dir)))
-                except: # if not, see if initialization exists in other folders
+                except:  # if not, see if initialization exists in other folders
                     if os.path.exists(os.path.join(dir_i, 'above', 'vasprun.xml')) and \
                             os.path.exists(os.path.join(dir_i, 'below', 'vasprun.xml')):
                         vasprun_above = Vasprun(os.path.join(dir_i, 'above', 'vasprun.xml'))
@@ -112,18 +111,19 @@ def get_energy(i, structure: Structure, target=0.01):
                             lowest_dir = 'below'
                         shutil.copy(os.path.join(dir_i, lowest_dir, 'WAVECAR'), os.path.join(folder, dir, 'WAVECAR'))
                         shutil.copy(os.path.join(dir_i, lowest_dir, 'CHGCAR'), os.path.join(folder, dir, 'CHGCAR'))
-                        logging.info('Copied from {} to {}'.format(os.path.join(dir_i, lowest_dir), os.path.join(folder, dir)))
+                        logging.info(
+                            'Copied from {} to {}'.format(os.path.join(dir_i, lowest_dir), os.path.join(folder, dir)))
                         if vasprun_above.final_energy - vasprun_below.final_energy < target:
                             same_wfxns += 1
 
-            if same_wfxns == 2: # If above and below are the same, we do not need to do above and below differently:
+            if same_wfxns == 2:  # If above and below are the same, we do not need to do above and below differently:
                 logging.info('Wavefunctions are the same')
                 if os.path.exists(os.path.join(folder, 'below')):
                     shutil.rmtree(os.path.join(folder, 'below'))
                 shutil.copytree(os.path.join(folder, 'above'), os.path.join(folder, 'below'))
                 os.chdir(folder)
                 os.chdir(dir)
-            else: # Otherwise don't copy anything between above and below
+            else:  # Otherwise don't copy anything between above and below
                 shutil.copy('INCAR', os.path.join(folder, dir, 'INCAR'))
                 shutil.copy('KPOINTS', os.path.join(folder, dir, 'KPOINTS'))
                 shutil.copy('POTCAR', os.path.join(folder, dir, 'POTCAR'))
@@ -138,9 +138,11 @@ def get_energy(i, structure: Structure, target=0.01):
                 incar.write_file('INCAR')
 
                 if os.environ['VASP_MPI'] == 'srun':
-                    j = StandardJob([os.environ['VASP_MPI'], vasp], 'vasp.log', auto_npar=False, final=True, settings_override=settings)
+                    j = StandardJob([os.environ['VASP_MPI'], vasp], 'vasp.log', auto_npar=False, final=True,
+                                    settings_override=settings)
                 else:
-                    j = StandardJob([os.environ['VASP_MPI'], '-np', os.environ['PBS_NP'], vasp], 'vasp.log', auto_npar=False, final=True, settings_override=settings)
+                    j = StandardJob([os.environ['VASP_MPI'], '-np', os.environ['PBS_NP'], vasp], 'vasp.log',
+                                    auto_npar=False, final=True, settings_override=settings)
                 c = Custodian(handlers, [j], max_errors=10)
                 c.run()
             os.chdir(cwd)
@@ -184,8 +186,8 @@ def get_ts(low, mp, high, target=0.01):
     q3_struct = nebmake('.', mp_struct, final_struct, 2, write=False)[1]
 
     # If not eliminate highest energy quartile and search again
-    q1 = int((low+mp)/2)
-    q3 = int((high+mp)/2)
+    q1 = int((low + mp) / 2)
+    q3 = int((high + mp) / 2)
     logging.info('Converging Q1')
     q1_e = get_energy(q1, q1_struct)
     logging.info('Converging Q3')

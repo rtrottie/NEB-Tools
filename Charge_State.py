@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-'''
+"""
 Automatically create VASP run directories to change the charge state of the given input
-'''
+"""
 
 import argparse
 import copy
@@ -19,7 +19,8 @@ parser.add_argument('-f', '--folder', help='Folder to get charge from (default :
                     type=str, default='0')
 parser.add_argument('-c', '--charge', help='Charge of initial state (default : 0)',
                     type=int, default=0)
-parser.add_argument('-s', '--system', help='Don\'t modify SYSTEM variable in INCAR.  By default charge state is appended to this')
+parser.add_argument('-s', '--system', help='Don\'t modify SYSTEM variable in INCAR.  By default charge state is '
+                                           'appended to this')
 args = parser.parse_args()
 
 # Load Input files
